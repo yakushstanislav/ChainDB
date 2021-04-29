@@ -1,0 +1,134 @@
+/*
+   Copyright (c) 2021 Stanislav Yakush (st.yakush@yandex.ru)
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+*/
+
+syntax = "proto3";
+
+package Service.IPC;
+
+option go_package = "github.com/yakushstanislav/chain-db/blockchain";
+
+import "storage.proto";
+
+message AuthData {
+    bytes password_hash = 1;
+}
+
+message StatusResponse {
+    uint32 status = 1;
+    string message = 2;
+}
+
+message PingRequest {
+}
+
+message CreateChainRequest {
+    uint64 chain_id = 1;
+    bytes data = 2;
+}
+
+message RemoveChainRequest {
+    uint64 chain_id = 1;
+}
+
+message AddBlockRequest {
+    uint64 chain_id = 1;
+    bytes data = 2;
+}
+
+message AddBlockResponse {
+    Service.Blockchain.Block block = 1;
+}
+
+message GetBlockRequest {
+    uint64 chain_id = 1;
+    uint64 block_id = 2;
+}
+
+message GetBlockResponse {
+    Service.Blockchain.Block block = 1;
+}
+
+message GetBlocksRequest {
+    uint64 chain_id = 1;
+}
+
+message GetBlocksResponse {
+    repeated Service.Blockchain.Block blocks = 1;
+}
+
+message VerifyChainRequest {
+    uint64 chain_id = 1;
+}
+
+message GetChainHeaderRequest {
+    uint64 chain_id = 1;
+}
+
+message GetChainHeaderResponse {
+    Service.Blockchain.Header header = 1;
+}
+
+message GetChainKeysRequest {
+    uint64 chain_id = 1;
+}
+
+message GetChainKeysResponse {
+    bytes private_key = 1;
+    bytes public_key = 2;
+}
+
+message GetChainInfoRequest {
+    uint64 chain_id = 1;
+}
+
+message GetChainInfoResponse {
+    uint64 chain_id = 1;
+    uint64 version = 2;
+    uint64 index = 3;
+}
+
+message Request {
+    AuthData auth_data = 1;
+    PingRequest ping_request = 2;
+    CreateChainRequest create_chain_request = 3;
+    RemoveChainRequest remove_chain_request = 4;
+    AddBlockRequest add_block_request = 5;
+    GetBlockRequest get_block_request = 6;
+    GetBlocksRequest get_blocks_request = 7;
+    VerifyChainRequest verify_chain_request = 8;
+    GetChainHeaderRequest get_chain_header_request = 9;
+    GetChainKeysRequest get_chain_keys_request = 10;
+    GetChainInfoRequest get_chain_info_request = 11;
+}
+
+message Response {
+    StatusResponse status = 1;
+    StatusResponse create_chain_response = 2;
+    StatusResponse remove_chain_response = 3;
+    AddBlockResponse add_block_response = 4;
+    GetBlockResponse get_block_response = 5;
+    GetBlocksResponse get_blocks_response = 6;
+    StatusResponse verify_chain_response = 7;
+    GetChainHeaderResponse get_chain_header_response = 8;
+    GetChainKeysResponse get_chain_keys_response = 9;
+    GetChainInfoResponse get_chain_info_response = 10;
+}
